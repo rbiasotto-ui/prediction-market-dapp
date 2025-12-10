@@ -1,19 +1,22 @@
 'use client';
 
-import { RainbowKitProvider, getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
-import { WagmiConfig, createConfig } from 'wagmi';
+import '@rainbow-me/rainbowkit/styles.css';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { WagmiConfig, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
 
 const { connectors } = getDefaultWallets({
   appName: 'Prediction Market',
-  projectId: 'walletconnect-project-id',
+  projectId: 'walletconnect-project-id', // substitua pelo seu real
 });
 
 const config = createConfig({
   autoConnect: true,
   connectors,
-  publicClient: publicProvider(),
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(),
+  },
 });
 
 export default function ConnectWallet() {
